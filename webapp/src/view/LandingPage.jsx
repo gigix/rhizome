@@ -1,8 +1,8 @@
 'use strict';
 
-var _      = require('lodash');
+var _ = require('lodash');
 var moment = require('moment');
-var React  = require('react');
+var React = require('react');
 var Reflux = require('reflux');
 
 var NavigationStore = require('stores/NavigationStore');
@@ -19,17 +19,17 @@ function _loadCampaigns(campaigns, offices) {
     .value();
 
   // jshint validthis: true
-  this.setState({ campaigns : recent });
+  this.setState({campaigns: recent});
 }
 
 function _loadDocuments(documents) {
   var recent = _.take(documents, 5);
 
-  this.setState({ uploads : recent });
+  this.setState({uploads: recent});
 }
 
 function _includeDashboard(dashboard, office) {
-  var slug    = dashboard.slug;
+  var slug = dashboard.slug;
   var offices = dashboard.offices;
 
   return (slug !== 'management-dashboard' &&
@@ -77,7 +77,7 @@ function _campaignRow(campaign, i) {
   return (
     <tr className={cls} key={campaign.id}>
       <td>{campaign.title}</td>
-      <td>{(parseFloat(campaign.pct_complete *100 ).toFixed(1)) + "% complete" }</td>
+      <td>{(parseFloat(campaign.pct_complete * 100).toFixed(1)) + "% complete" }</td>
       <td>{country}</td>
       <td>{district}</td>
       <td>{_dashboardSelect(others)}</td>
@@ -94,31 +94,31 @@ function _uploadRow(upload, i) {
 }
 
 module.exports = React.createClass({
-  mixins : [
+  mixins: [
     Reflux.connect(NavigationStore)
   ],
 
-  getInitialState : function () {
+  getInitialState: function () {
     return {
-      visibleCampaigns : 6,
-      visibleUploads   : 5
+      visibleCampaigns: 6,
+      visibleUploads: 5
     };
   },
 
-    showAllCampaigns: function(e) {
-    this.setState({ visibleCampaigns: Infinity });
+  showAllCampaigns: function (e) {
+    this.setState({visibleCampaigns: Infinity});
     e.preventDefault();
   },
 
-  render : function () {
+  render: function () {
     var campaigns;
     if (_.isFinite(this.state.visibleCampaigns)) {
-       campaigns = _(this.state.campaigns)
-                      .take(this.state.visibleCampaigns)
-                      .map(_campaignRow)
-                      .value();
+      campaigns = _(this.state.campaigns)
+        .take(this.state.visibleCampaigns)
+        .map(_campaignRow)
+        .value();
     } else {
-       campaigns = _(this.state.campaigns).map(_campaignRow).value();
+      campaigns = _(this.state.campaigns).map(_campaignRow).value();
     }
 
     // data entry section, according to permissions
@@ -127,52 +127,54 @@ module.exports = React.createClass({
       var csv_upload_button = '';
       if (NavigationStore.userHasPermission('upload_csv')) {
         csv_upload_button = (
-                <a className="small button" href="/source_data/file_upload">
-                  <i className="fa fa-upload"></i>&emsp;Upload data
-                </a>
-              );
+          <a className="small button" href="/source_data/file_upload">
+            <i className="fa fa-upload"></i>&emsp;Upload data
+          </a>
+        );
       }
 
       var data_entry_button = '';
       if (NavigationStore.userHasPermission('data_entry_form')) {
         data_entry_button = (
-                <a className="small button" href="/datapoints/entry">
-                  <i className="fa fa-table"></i>&emsp;Data Entry Form
-                </a>
-              );
+          <a className="small button" href="/datapoints/entry">
+            <i className="fa fa-table"></i>&emsp;Data Entry Form
+          </a>
+        );
       }
 
-      var uploads = <tr><td>No uploads yet.</td></tr>;
+      var uploads = <tr>
+        <td>No uploads yet.</td>
+      </tr>;
       if (this.state.documents && this.state.documents.length > 0) {
         documents = _(this.state.documents)
-                      .take(this.state.visibleUploads)
-                      .map(_uploadRow)
-                      .value();
+          .take(this.state.visibleUploads)
+          .map(_uploadRow)
+          .value();
       }
 
       var dataEntry = (
-          <div className="row">
-            <div className="medium-4 columns">
-              <h2>Enter Data</h2>
-              {data_entry_button}
-              &emsp;
-              {csv_upload_button}
-            </div>
-            <div className="medium-8 columns">
-              <h2>Your Recent CSV Uploads</h2>
-              <table>
-                <tbody>{uploads}</tbody>
-                <tfoot>
-                  <tr>
-                    <td className="more" colSpan="3">
-                      <a href="/source_data/document_index/">see all uploads</a>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
+        <div className="row">
+          <div className="medium-4 columns">
+            <h2>Enter Data</h2>
+            {data_entry_button}
+            &emsp;
+            {csv_upload_button}
           </div>
-        );
+          <div className="medium-8 columns">
+            <h2>Your Recent CSV Uploads</h2>
+            <table>
+              <tbody>{uploads}</tbody>
+              <tfoot>
+              <tr>
+                <td className="more" colSpan="3">
+                  <a href="/source_data/document_index/">see all uploads</a>
+                </td>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      );
 
     }
 
@@ -191,11 +193,11 @@ module.exports = React.createClass({
               <table>
                 <tbody>{campaigns}</tbody>
                 <tfoot>
-                  <tr>
-                    <td className="more" colSpan="6">
-                      <a href="#" onClick={this.showAllCampaigns}>see all campaigns</a>
-                    </td>
-                  </tr>
+                <tr>
+                  <td className="more" colSpan="6">
+                    <a href="#" onClick={this.showAllCampaigns}>see all campaigns</a>
+                  </td>
+                </tr>
                 </tfoot>
               </table>
             </div>
@@ -206,10 +208,18 @@ module.exports = React.createClass({
         </div>
 
         <div className="about medium-3 columns">
-          <img src="http://polio.seedscientific.com/static/img/RhizomeLogoBkOnWh.png" alt="Rhizome Logo" width="100%" />
+          <img src="http://polio.seedscientific.com/static/img/RhizomeLogoBkOnWh.png" alt="Rhizome Logo" width="100%"/>
+
           <h2>About</h2>
-          <p>Rhizomes are underground systems that produce stems and roots of plants, allowing them to grow and thrive. They store nutrients that help plants survive and regenerate in the most challenging conditions. Ceaselessly establishing new connections between them, rhizomes constitute resilient, flexible and dynamic systems, rooted in their local environments and primed for long-term sustainability.</p>
-          <p>Rhizome DB supports the polio programme’s critical need to adapt, evolve and reach the unreached. Rhizome DB connects staff, managers and policy makers to the evidence they need to drive local solutions. Maximize your impact to eradicate polio.</p>
+
+          <p>Rhizomes are underground systems that produce stems and roots of plants, allowing them to grow and thrive.
+            They store nutrients that help plants survive and regenerate in the most challenging conditions. Ceaselessly
+            establishing new connections between them, rhizomes constitute resilient, flexible and dynamic systems,
+            rooted in their local environments and primed for long-term sustainability.</p>
+
+          <p>Rhizome DB supports the polio programme’s critical need to adapt, evolve and reach the unreached. Rhizome
+            DB connects staff, managers and policy makers to the evidence they need to drive local solutions. Maximize
+            your impact to eradicate polio.</p>
         </div>
 
       </div>
