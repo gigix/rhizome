@@ -47,47 +47,54 @@ var Navigation = React.createClass({
       );
 
     return (
-      <nav>
-        <ul>
-          <li className='home item'><a href='/'>Rhizome DB</a></li>
+        <div className='row'>
+        <nav class="top-bar" data-topbar role="navigation">
+          <section className="top-bar-section  medium-4 columns">
+            <ul className='left'>
+              <li className='home item'><a href='/'>Rhizome DB</a></li>
 
-          <li className='dashboard item'>
-            <NavMenu text={'Explore Data'} icon={'fa-bar-chart'}>
-              {dashboards}
+              <li className='dashboard item'>
+                <NavMenu text={'Explore Data'} icon={'fa-bar-chart'}>
+                  {dashboards}
 
-              <li className='separator'><hr /></li>
+                  <li className='separator'><hr /></li>
 
-              <NavMenuItem href='/datapoints/table'>Data Browser</NavMenuItem>
+                  <NavMenuItem href='/datapoints/table'>Data Browser</NavMenuItem>
 
-              <li className='separator'><hr /></li>
+                  <li className='separator'><hr /></li>
 
-              <NavMenuItem href='/datapoints/dashboards/'>
-                See all custom dashboards
-              </NavMenuItem>
+                  <NavMenuItem href='/datapoints/dashboards/'>
+                    See all custom dashboards
+                  </NavMenuItem>
 
-              <NavMenuItem href='/datapoints/dashboards/edit'>
-                Create New dashboard
-              </NavMenuItem>
-            </NavMenu>
-          </li>
-          {enterData}
-          {manage}
-        </ul>
+                  <NavMenuItem href='/datapoints/dashboards/edit'>
+                    Create New dashboard
+                  </NavMenuItem>
+                </NavMenu>
+              </li>
+              {enterData}
+              {manage}
+            </ul>
+            </section>
 
-        <ul className='logo'>
-          <li>
-            <img src="/static/img/layout_set_logo.png" alt="Rhizome Logo" width="100%" />
-            </li>
-        </ul>
+           <ul className='logo medium-4 columns'>
+            <li>
+              <img src="/static/img/layout_set_logo.png" alt="Rhizome Logo" width="100%" />
+              </li>
+          </ul>
 
-        <ul className='right'>
-          <li>
-            <a href='/accounts/logout?next=/' title='logout'>
-              log out&ensp;<i className='fa fa-lg fa-sign-out'></i>
-            </a>
-          </li>
-        </ul>
-      </nav>
+                    <section className="top-bar-section medium-4 columns">
+
+            <ul className='right'>
+              <li>
+                <a href='/accounts/logout?next=/' title='logout'>
+                  log out&ensp;<i className='fa fa-lg fa-sign-out'></i>
+                </a>
+              </li>
+            </ul>
+          </section>
+        </nav>
+          </div>
     );
   }
 });

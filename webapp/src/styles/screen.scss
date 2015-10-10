@@ -79,7 +79,6 @@ select {
 }
 
 .logo {
-  display: table;
   position: absolute;
   left: 50%;
   right: 50%;
@@ -107,7 +106,7 @@ nav {
       border-top: 2px solid transparent;
       display: inline-block;
       margin-bottom: 3px;
-      padding: 4pt 12pt 3pt 12pt;
+      //padding: 4pt 12pt 3pt 12pt;
     }
 
   }
@@ -738,6 +737,20 @@ ul {
     color: rgb(175, 55, 62);
     padding: 0;
     background-color: transparent;
+  }
+}
+
+.top-bar-section {
+  ul li {
+    background: black;
+    text-align: center;
+    width: 100pt;
+  }
+
+  li:not(.has-form) a:not(.button) {
+    background: black;
+    padding: 0px;
+    line-height: 4.8125rem
   }
 }
 
