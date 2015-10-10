@@ -49,9 +49,9 @@ var Navigation = React.createClass({
     return (
       <nav>
         <ul>
-          <li className='home'><a href='/'>Rhizome DB</a></li>
+          <li className='home item'><a href='/'>Rhizome DB</a></li>
 
-          <li className='dashboard'>
+          <li className='dashboard item'>
             <NavMenu text={'Explore Data'} icon={'fa-bar-chart'}>
               {dashboards}
 
@@ -72,6 +72,12 @@ var Navigation = React.createClass({
           </li>
           {enterData}
           {manage}
+        </ul>
+
+        <ul className='logo'>
+          <li>
+            <img src="/static/img/layout_set_logo.png" alt="Rhizome Logo" width="100%" />
+            </li>
         </ul>
 
         <ul className='right'>
