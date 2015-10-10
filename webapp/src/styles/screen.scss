@@ -26,8 +26,18 @@ h6 {
 }
 
 header {
-  background: linear-gradient(to bottom, #333, #3a3a3a);
-  margin-bottom: 1rem;
+  //background: linear-gradient(to bottom, #333, #3a3a3a);
+  //margin-bottom: 1rem;
+  background-color: #000;
+    //position: fixed;
+  top: 0px;
+  z-index: 16;
+  left: 0px;
+  right: 0px;
+  min-height: 95px;
+  margin: 0 auto;
+  border-bottom: solid 4px #fff;
+
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -448,6 +458,9 @@ button,
   p {
     margin-bottom: 1.2em;
   }
+  img {
+    background-color: red;
+  }
 }
 
 svg {
@@ -710,3 +723,5 @@ ul {
     background-color: transparent;
   }
 }
+
+
