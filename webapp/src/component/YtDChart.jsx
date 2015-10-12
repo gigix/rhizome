@@ -67,7 +67,8 @@ module.exports = React.createClass({
           range   : _.constant([0, _(series).pluck('values').flatten().pluck('total').max()]),
           x       : _.property('x'),
           xFormat : d3.time.format('%b'),
-          y       : _.property('total')
+          y       : _.property('total'),
+          aspect  : 1
         }
       });
 

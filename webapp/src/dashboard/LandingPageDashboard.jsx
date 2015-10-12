@@ -90,6 +90,7 @@ var ManagementDashboard = React.createClass({
 
     var impact = (
         <div className='medium-2 columns'>
+            <h5>{location}</h5>
             <PolioCasesYTD data={data.impact.polioCasesYtd} campaign={this.props.campaign} loading={loading} />
         </div>
     );
@@ -98,7 +99,7 @@ var ManagementDashboard = React.createClass({
         <div>
             <section className='medium-2 columns'>
               <h5>{location}</h5>
-              <h6>Missed Children</h6>
+              <h4>Missed Children</h4>
                   <Chart type='ChoroplethMap'
                     data={missedChildrenMap}
                     loading={loading}
@@ -113,11 +114,11 @@ var ManagementDashboard = React.createClass({
             <div className='medium-2 columns'>
                 <section>
                     <h5>{location}</h5>
-                    <h6>Missed Children</h6>
+                    <h4>Missed Children</h4>
                     <Chart type='ColumnChart' data={missed}
                       loading={loading}
                       options={{
-                        aspect  : 2.26,
+                        aspect  : 1.035,
                         color   : _.flow(_.property('name'), d3.scale.ordinal().range(colors)),
                         domain  : _.constant(missedScale),
                         x       : d => moment(d.campaign.start_date).startOf('month').valueOf(),

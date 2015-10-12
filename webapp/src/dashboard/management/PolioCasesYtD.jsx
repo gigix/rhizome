@@ -49,7 +49,8 @@ module.exports = React.createClass({
     // Set the title based on whether there is data
     var title = _.isEmpty(this.props.data) ?
       (<h4>Polio Cases</h4>) :
-      (<h4>
+      (
+          <h4>
         Polio cases in {year} (as of {month}):&ensp;<span
         style={{
           'color'       : '#AF373E',
@@ -88,7 +89,6 @@ module.exports = React.createClass({
             loading={loading}
             options={{
               color  : _.flow(_.property('name'), color),
-              aspect : 1.757
             }} />
         </div>
       </section>

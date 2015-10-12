@@ -717,7 +717,7 @@ ul {
 }
 
 .overlay {
-  background-color: transparentize($ghost, 0.3);
+  //background-color: transparentize($ghost, 0.3);
   color: $aluminum;
   opacity: 1;
   text-align: center;
@@ -819,5 +819,9 @@ ul {
       background-color: #666666;
     }
   }
+}
+
+.column-chart {
+  margin-top: 12px;
 }
 
