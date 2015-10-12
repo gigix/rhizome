@@ -29,7 +29,7 @@ var Navigation = React.createClass({
       var uploadLink = <NavMenuItem href='/datapoints/source-data'>Upload Data via CSV File</NavMenuItem>
 
       var enterData = (
-          <li className='data'>
+          <li className='data medium-3 columns'>
             <NavMenu text={'Enter Data'} icon={'fa-table'}>
               {formLink}
               {uploadLink}
@@ -39,7 +39,7 @@ var Navigation = React.createClass({
 
 
     var manage = (
-        <li>
+        <li className="medium-3 columns">
           <a href='/ufadmin/users'>
             <i className='fa fa-cogs'></i>&ensp;Manage System
           </a>
@@ -47,54 +47,49 @@ var Navigation = React.createClass({
       );
 
     return (
-        <div className='row'>
-        <nav class="top-bar" data-topbar role="navigation">
-          <section className="top-bar-section  medium-4 columns">
-            <ul className='left'>
-              <li className='home item'><a href='/'>Rhizome DB</a></li>
+          <nav className="top-bar" data-topbar role="navigation">
+            <section className="top-bar-section">
+              <ul className='left row'>
+                <li className='home item medium-3 columns'><a href='/'>Rhizome DB</a></li>
 
-              <li className='dashboard item'>
-                <NavMenu text={'Explore Data'} icon={'fa-bar-chart'}>
-                  {dashboards}
+                <li className='dashboard item medium-3 columns'>
+                  <NavMenu text={'Explore Data'} icon={'fa-bar-chart'}>
+                    {dashboards}
 
-                  <li className='separator'><hr /></li>
+                    <li className='separator'><hr /></li>
 
-                  <NavMenuItem href='/datapoints/table'>Data Browser</NavMenuItem>
+                    <NavMenuItem href='/datapoints/table'>Data Browser</NavMenuItem>
 
-                  <li className='separator'><hr /></li>
+                    <li className='separator'><hr /></li>
 
-                  <NavMenuItem href='/datapoints/dashboards/'>
-                    See all custom dashboards
-                  </NavMenuItem>
+                    <NavMenuItem href='/datapoints/dashboards/'>
+                      See all custom dashboards
+                    </NavMenuItem>
 
-                  <NavMenuItem href='/datapoints/dashboards/edit'>
-                    Create New dashboard
-                  </NavMenuItem>
-                </NavMenu>
-              </li>
-              {enterData}
-              {manage}
-            </ul>
-            </section>
+                    <NavMenuItem href='/datapoints/dashboards/edit'>
+                      Create New dashboard
+                    </NavMenuItem>
+                  </NavMenu>
+                </li>
+                {enterData}
+                {manage}
+              </ul>
 
-           <ul className='logo medium-4 columns'>
-            <li>
-              <img src="/static/img/layout_set_logo.png" alt="Rhizome Logo" width="100%" />
-              </li>
-          </ul>
-
-                    <section className="top-bar-section medium-4 columns">
-
-            <ul className='right'>
+              <ul className='logo'>
               <li>
-                <a href='/accounts/logout?next=/' title='logout'>
-                  log out&ensp;<i className='fa fa-lg fa-sign-out'></i>
-                </a>
+                <img src="/static/img/layout_set_logo.png" alt="Rhizome Logo" width="100%" />
               </li>
             </ul>
-          </section>
-        </nav>
-          </div>
+
+              <ul className='right'>
+                <li>
+                  <a href='/accounts/logout?next=/' title='logout'>
+                    log out&ensp;<i className='fa fa-lg fa-sign-out'></i>
+                  </a>
+                </li>
+              </ul>
+            </section>
+            </nav>
     );
   }
 });

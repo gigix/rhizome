@@ -21,10 +21,11 @@ var NavMenu = React.createClass({
 
     return (
       <a onClick={this._toggleMenu} onBlur={this._onBlur} tabIndex='-1'>
-        {display}&emsp;<i className='fa fa-chevron-down'></i>
+        {display}
+        {/* {display}&emsp;<i className='fa fa-chevron-down'></i> */}
       </a>
     );
-  },
+  }
 
 });
 
