@@ -260,16 +260,15 @@ table {
 }
 
 *[role="menuitem"] {
-  color: #ffffff;
-  display: block;
-  padding: 5pt;
-  background-color: #000000;
+  color: $body-font-color;
+   display: block;
+   padding: 5pt;
 
-  &:hover {
-    //background-color: $primary-color;
-    background-color: #666666;
-    color: white;
-  }
+   &:hover {
+     background-color: $primary-color;
+     color: white;
+   }
+
 }
 
 button,
@@ -669,13 +668,13 @@ ul {
 }
 
 .menu {
-  .container {
-    padding: 0px;
-  }
   *[role="search"] {
     input {
       background-color: $vapor;
     }
+  }
+  .container {
+    padding: 3px 4px 22px 4px;
   }
 }
 
@@ -807,6 +806,17 @@ ul {
     &:hover {
       color: #666666;
       opacity: 1;
+    }
+  }
+}
+
+.secondary-menu {
+  background-color: #000000;
+  *[role="menuitem"] {
+    color: #ffffff;
+
+    &:hover {
+      background-color: #666666;
     }
   }
 }
