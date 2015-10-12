@@ -1,204 +1,313 @@
 'use strict';
 
-var _      = require('lodash');
-var moment = require('moment');
-var React  = require('react');
+var _ = require('lodash');
+var React = require('react');
 var Reflux = require('reflux');
+var page = require('page');
+var moment = require('moment');
 
-var NavigationStore = require('stores/NavigationStore');
-var PermissionStore = require('stores/PermissionStore');
+var dashboardInit = require('data/dashboardInit');
+
+var TitleMenu = require('component/TitleMenu.jsx');
+var RegionTitleMenu = require('component/RegionTitleMenu');
+var CampaignTitleMenu = require('component/CampaignTitleMenu.jsx');
+var MenuItem = require('component/MenuItem.jsx');
+
+var CustomDashboard = require('dashboard/CustomDashboard.jsx');
 
 var DashboardStore = require('stores/DashboardStore');
+var DataStore = require('stores/DataStore');
+var GeoStore = require('stores/GeoStore');
+var IndicatorStore = require('stores/IndicatorStore');
+var NavigationStore = require('stores/NavigationStore');
 
-function _loadCampaigns(campaigns, offices) {
-  var recent = _(campaigns)
-    .each(function (campaign, i) {
-      campaign.office = offices[campaign.office_id];
-    })
-    .sortBy('start_date')
-    .reverse()
-    .value();
+var AppActions = require('actions/AppActions');
+var DashboardActions = require('actions/DashboardActions');
+var DataActions = require('actions/DataActions');
+var GeoActions = require('actions/GeoActions');
 
-  // jshint validthis: true
-  this.setState({ campaigns : recent });
-}
+var LAYOUT = {
+  'Management Dashboard': require('dashboard/ManagementDashboard.jsx'),
+  'NGA Campaign Monitoring': require('dashboard/NCODashboard.jsx'),
+  'District Dashboard': require('dashboard/District.jsx'),
+  'Source Data': require('dashboard/SourceDataDashboard.jsx'),
+  'ODK Dashboard': require('dashboard/ODKDashboard.jsx'),
+};
 
-function _loadDocuments(documents) {
-  var recent = _.take(documents, 5);
-
-  this.setState({ uploads : recent });
-}
-
-function _includeDashboard(dashboard, office) {
-  var slug    = dashboard.slug;
-  var offices = dashboard.offices;
-
-  return (slug !== 'management-dashboard' &&
-    slug !== 'district' &&
-    (_.isEmpty(offices) || offices.indexOf(office) > -1)
-  );
-}
-
-function _dashboardSelect(dashboards, campaign) {
-  if (_.isEmpty(dashboards)) {
-    return null;
-  }
-
-  // FIXME: This should render a dropdown with all other available dashboards
-  return (
-    <a href={'/datapoints/' + dashboards[0].path}>
-      {dashboards[0].title}
-    </a>
-  );
-}
-
-function _campaignRow(campaign, i) {
-  var country;
-  var district;
-  var others = [];
-
-  _.each(campaign.dashboards, function (d) {
-    switch (d.title) {
-      case 'Management Dashboard':
-        country = (<a href={'/datapoints/' + d.path}>Country</a>);
-        break;
-      case 'District Dashboard':
-        district = (<a href={'/datapoints/' + d.path}>District</a>);
-        break;
-      default:
-        if (!d.hasOwnProperty('default_office_id') || d.default_office_id === campaign.office_id) {
-          others.push(d);
-        }
-        break;
-    }
-  });
-
-  var cls = i % 2 === 0 ? 'even' : 'odd';
-
-  return (
-    <tr className={cls} key={campaign.id}>
-      <td>{campaign.title}</td>
-      <td>{(parseFloat(campaign.pct_complete *100 ).toFixed(1)) + "% complete" }</td>
-      <td>{country}</td>
-      <td>{district}</td>
-      <td>{_dashboardSelect(others)}</td>
-    </tr>
-  );
-}
-
-function _uploadRow(upload, i) {
-  return (
-    <tr className={i % 2 === 0 ? 'odd' : 'even'} key={upload.id}>
-      <td>{upload.status}</td>
-    </tr>
-  );
-}
-
-module.exports = React.createClass({
-  mixins : [
-    Reflux.connect(NavigationStore)
+var Dashboard = React.createClass({
+  mixins: [
+    Reflux.ListenerMixin,
+    Reflux.connect(DataStore)
   ],
 
-  getInitialState : function () {
+  getInitialState: function() {
     return {
-      visibleCampaigns : 6,
-      visibleUploads   : 5
+      locations: [],
+      campaigns: [],
+      location: null,
+      campaign: null,
+      dashboard: null,
     };
   },
 
-  showAllCampaigns: function(e) {
-    this.setState({ visibleCampaigns: Infinity });
-    e.preventDefault();
+  componentWillMount: function() {
+    page('/datapoints/:dashboard/:location/:year/:month', this._show);
+    page('/', this._getSourceData);
+    AppActions.init();
   },
 
-  render : function () {
-    var campaigns;
-    if (_.isFinite(this.state.visibleCampaigns)) {
-       campaigns = _(this.state.campaigns)
-                      .take(this.state.visibleCampaigns)
-                      .map(_campaignRow)
-                      .value();
-    } else {
-       campaigns = _(this.state.campaigns).map(_campaignRow).value();
+  componentWillUpdate: function(nextProps, nextState) {
+    if (!(nextState.campaign && nextState.location && nextState.dashboard)) {
+      return;
     }
 
-    // data entry section, according to permissions
-    if (PermissionStore.userHasPermission('upload_csv') || PermissionStore.userHasPermission('data_entry_form')) {
+    var campaign = moment(nextState.campaign.start_date).format('MM/YYYY')
+    var title = [
+      nextState.dashboard.title,
+      [nextState.location.name, campaign].join(' '),
+      'RhizomeDB'
+    ].join(' - ');
 
-      var csv_upload_button = '';
-      if (PermissionStore.userHasPermission('upload_csv')) {
-        csv_upload_button = (
-                <a className="small button" href="/source_data/file_upload">
-                  <i className="fa fa-upload"></i>&emsp;Upload data
-                </a>
-              );
+    if (document.title !== title) {
+      document.title = title;
+    }
+  },
+
+  componentDidMount: function() {
+    // Reflux.ListenerMixin will unmount listeners
+    this.listenTo(DashboardStore, this._onDashboardChange);
+    this.listenTo(NavigationStore, this._onNavigationChange);
+
+    this.listenTo(DashboardActions.navigate, this._navigate);
+
+    this.listenTo(IndicatorStore, () => this.forceUpdate());
+    this.listenTo(GeoStore, () => this.forceUpdate());
+  },
+
+  _onDashboardChange: function(state) {
+    var fetchData = this.state.loaded;
+
+    this.setState(state);
+
+    if (fetchData) {
+      var q = DashboardStore.getQueries();
+
+      if (_.isEmpty(q)) {
+        DataActions.clear();
+      } else {
+        DataActions.fetch(this.state.campaign, this.state.location, q);
       }
 
-      var data_entry_button = '';
-      if (PermissionStore.userHasPermission('data_entry_form')) {
-        data_entry_button = (
-                <a className="small button" href="/datapoints/entry">
-                  <i className="fa fa-table"></i>&emsp;Data Entry Form
-                </a>
-              );
+      if (this.state.hasMap) {
+        GeoActions.fetch(this.state.location);
       }
+    } else if (NavigationStore.loaded) {
+      page({
+        click: false
+      });
+    }
+  },
 
-      var uploads = <tr><td>No uploads yet.</td></tr>;
-      if (this.state.documents && this.state.documents.length > 0) {
-        documents = _(this.state.documents)
-                      .take(this.state.visibleUploads)
-                      .map(_uploadRow)
-                      .value();
-      }
+  _onNavigationChange: function(nav) {
+    if (NavigationStore.loaded && DashboardStore.loaded) {
+      page({
+        click: false
+      });
+    }
+  },
 
-      var dataEntry = (
-          <div className="row">
-            <div className="medium-4 columns">
-              <h2>Enter Data</h2>
-              {data_entry_button}
-              &emsp;
-              {csv_upload_button}
-            </div>
-            <div className="medium-8 columns">
-              <h2>Your Recent CSV Uploads</h2>
-              <table>
-                <tbody>{uploads}</tbody>
-                <tfoot>
-                  <tr>
-                    <td className="more" colSpan="3">
-                      <a href="/source_data/document_index/">see all uploads</a>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
+  _setCampaign: function(id) {
+    var campaign = _.find(this.state.campaigns, c => c.id === id);
+
+    if (!campaign) {
+      return;
+    }
+
+    this._navigate({
+      campaign: moment(campaign.start_date, 'YYYY-MM-DD').format('YYYY/MM')
+    });
+  },
+
+  _setlocation: function(id) {
+    var location = _.find(this.state.locations, r => r.id === id)
+    // console.log("_setlocation:", id, location);
+
+    if (!location) {
+      return;
+    }
+
+    this._navigate({
+      location: location.name
+    });
+  },
+
+  _setDashboard: function(slug) {
+    this._navigate({
+      dashboard: slug
+    });
+  },
+
+  _navigate: function(params) {
+    var slug = _.get(params, 'dashboard', _.kebabCase(this.state.dashboard.title));
+    var location = _.get(params, 'location', this.state.location.name);
+    var campaign = _.get(params, 'campaign', moment(this.state.campaign.start_date, 'YYYY-MM-DD').format('YYYY/MM'));
+    if (_.isNumber(location)) {
+      location = _.find(this.state.locations, r => r.id === location).name;
+    }
+
+    page('/datapoints/' + [slug, location, campaign].join('/'));
+  },
+
+  _show: function(ctx) {
+    console.log(ctx);
+    NavigationStore.getDashboard(ctx.params.dashboard).then(dashboard => {
+      DashboardActions.setDashboard({
+        dashboard,
+        location: ctx.params.location,
+        date: [ctx.params.year, ctx.params.month].join('-')
+      });
+    })
+  },
+
+  _getSourceData: function(ctx){
+    ctx.path = '/datapoints/management-dashboard/Nigeria/2015/09/';
+    ctx.canonicalPath = ctx.path;
+    ctx.pathname = ctx.path;
+    ctx.params.dashboard = 'management-dashboard';
+    ctx.params.location = 'Nigeria';
+    ctx.params.year = '2015';
+    ctx.params.month = '09';
+    this._show(ctx);
+  },
+
+  render: function () {
+    // console.log("RENDER", this.state.location);
+    if (!(this.state.loaded && this.state.dashboard)) {
+      var style = {
+        fontSize: '2rem',
+      };
+
+      return (
+        <div style={style} className='overlay'>
+          <div>
+            <div><i className='fa fa-spinner fa-spin'></i>&ensp;Loading</div>
           </div>
-        );
+        </div>
+      );
+    }
 
+    var {campaign, loading, location, doc_id, doc_tab} = this.state;
+
+    var dashboardDef  = this.state.dashboard;
+    var dashboardName = _.get(dashboardDef, 'title', '');
+
+    var indicators = IndicatorStore.getById.apply(
+      IndicatorStore,
+      _(_.get(dashboardDef, 'charts', []))
+        .pluck('indicators')
+        .flatten()
+        .uniq()
+        .value()
+    );
+
+    // this.state.data is empty for custom dashboards.. tryign to fix
+    // var data_for_init = this.state.data ||
+    var data_for_init = this.state.dashboard.charts
+
+    var data = dashboardInit(
+      dashboardDef,
+      this.state.data,
+      location,
+      campaign,
+      this.state.locations,
+      indicators,
+      GeoStore.features
+    );
+
+    var dashboardProps = {
+      campaign: campaign,
+      dashboard: dashboardDef,
+      data: data,
+      indicators: indicators,
+      loading: loading,
+      location: location,
+      doc_tab: doc_tab,
+      doc_id: doc_id
+    };
+
+    var dashboard = React.createElement(
+      _.get(LAYOUT, dashboardName, CustomDashboard),
+      dashboardProps);
+
+    var campaigns = _(this.state.campaigns)
+      .filter(c => c.office_id === location.office_id)
+      .sortBy('start_date')
+      .reverse()
+      .value();
+
+    if (campaign.office_id !== location.office_id) {
+      campaign = campaigns[0];
+    }
+
+    var dashboardItems = MenuItem.fromArray(
+      _.map(NavigationStore.dashboards, d => {
+        return {
+          title: d.title,
+          value: _.kebabCase(d.title)
+        };
+      }),
+      this._setDashboard);
+
+    var edit;
+    if (dashboardDef.owned_by_current_user) {
+      edit = (
+        <span>
+          <a className='menu-button fa-stack'
+            href={'/datapoints/dashboards/edit/' + dashboardDef.id + '/'}>
+            <i className='fa fa-stack-2x fa-circle'></i>
+            <i className='fa fa-stack-1x fa-pencil'></i>
+          </a>
+          &emsp;
+        </span>
+      );
     }
 
     return (
       <div>
-          <div className="row">
-            <div className="small-12 columns">
+        <div classNameName='clearfix'></div>
 
-              <h2>Recent Campaigns</h2>
-              <table>
-                <tbody>{campaigns}</tbody>
-                <tfoot>
-                  <tr>
-                    <td className="more" colSpan="6">
-                      <a href="#" onClick={this.showAllCampaigns}>see all campaigns</a>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+        <form className='inline no-print'>
+          <div className='row'>
+            <div className='medium-6 columns'>
+              <h1>
+                <CampaignTitleMenu
+                  campaigns={campaigns}
+                  selected={campaign}
+                  sendValue={this._setCampaign} />
+                &emsp;
+                <RegionTitleMenu
+                  locations={this.state.locations}
+                  selected={location}
+                  sendValue={this._setlocation} />
+              </h1>
+            </div>
+
+            <div className='medium-4 columns'>
+              <h2 style={{ textAlign: 'right' }}>
+                {edit}
+                <TitleMenu text={dashboardName}>
+                  {dashboardItems}
+                </TitleMenu>
+              </h2>
             </div>
           </div>
+        </form>
 
-          {dataEntry}
-        
+        {dashboard}
       </div>
     );
-  }
+  },
+
 });
+
+module.exports = Dashboard;
