@@ -25,8 +25,8 @@ var Navigation = React.createClass({
       .value()
     );
 
-      var formLink = <NavMenuItem href='/datapoints/entry'>Enter Data via Form</NavMenuItem>
-      var uploadLink = <NavMenuItem href='/datapoints/source-data'>Upload Data via CSV File</NavMenuItem>
+      var formLink = <NavMenuItem href='/datapoints/entry'>Enter Data via Form</NavMenuItem>;
+      var uploadLink = <NavMenuItem href='/datapoints/source-data'>Upload Data via CSV File</NavMenuItem>;
 
       var enterData = (
           <li className='data medium-3 columns'>
@@ -45,6 +45,37 @@ var Navigation = React.createClass({
           </a>
         </li>
       );
+
+    var myData = (
+        <li className='medium-4 columns'>
+          <NavMenu text={'MYDATA'} icon={'fa-plus'}>
+          </NavMenu>
+        </li>
+    );
+
+    var logoutLink = <NavMenuItem href='/accounts/logout?next=/'>Log out</NavMenuItem>;
+
+    var myToolkit = (
+        <li className='medium-4 columns'>
+          <NavMenu text={'MYTOOLKIT'} icon={'fa-plus'}>
+            {logoutLink}
+          </NavMenu>
+        </li>
+    );
+
+    var chat = (
+         <li className='medium-2 columns'>
+           <a href='#' title='chat'>
+             <i className="fa fa-comment"></i></a>
+         </li>
+    );
+
+    var search = (
+        <li className='medium-2 columns'>
+          <a href='#' title='search'>
+            <i className="fa fa-search"></i></a>
+        </li>
+    );
 
     return (
           <nav className="top-bar" data-topbar role="navigation">
@@ -81,12 +112,11 @@ var Navigation = React.createClass({
               </li>
             </ul>
 
-              <ul className='right'>
-                <li>
-                  <a href='/accounts/logout?next=/' title='logout'>
-                    log out&ensp;<i className='fa fa-lg fa-sign-out'></i>
-                  </a>
-                </li>
+              <ul className='right row'>
+                {myData}
+                {myToolkit}
+                {chat}
+                {search}
               </ul>
             </section>
             </nav>

@@ -94,10 +94,7 @@ nav {
     margin: 0;
 
     li {
-      //border-top: 2px solid transparent;
       display: inline-block;
-      //margin-bottom: 3px;
-      //padding: 4pt 12pt 3pt 12pt;
     }
 
   }
@@ -110,7 +107,7 @@ nav {
 
     &:focus,
     &:hover {
-      color: #fff !important;
+      color: #fff;
       opacity: 1;
       outline: none;
     }
@@ -144,6 +141,7 @@ body.admin nav .admin {
 
   a {
     opacity: 1;
+    background-color: darkred !important;
   }
 }
 
@@ -733,25 +731,28 @@ ul {
 }
 
 .top-bar {
+  height: 99px;
   background: black;
 }
 
 .top-bar-section {
   padding: 0px;
+  height: 99px;
 
-  .left {
+  ul {
     width: 38%;
   }
 
   ul li {
     background: black;
     text-align: center;
+    padding: 0px;
   }
 
   li:not(.has-form) a:not(.button) {
     background: black;
     padding: 0px;
-    line-height: 95px;
+    line-height: 99px;
   }
 }
 
