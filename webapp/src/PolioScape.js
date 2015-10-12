@@ -6,6 +6,7 @@ var Vue = require('vue');
 var LandingPage      = require('view/LandingPage.jsx');
 var DashboardList = require('view/dashboard-list/DashboardList.jsx');
 var Navigation       = require('component/Navigation.jsx');
+var Footer = require('component/Footer.jsx');
 var AdminApp         = require('./ufadmin');
 var GroupForm = require('view/group-form/GroupForm.jsx');
 
@@ -27,6 +28,11 @@ Vue.partial('tooltip-indicator', require('./partial/tooltip-indicator.html'));
 React.render(
 	React.createElement(Navigation),
 	document.getElementById('main-nav')
+);
+
+React.render(
+	React.createElement(Footer),
+	document.getElementById('main-footer')
 );
 
 module.exports = {

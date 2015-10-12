@@ -101,7 +101,8 @@ nav {
 
   a {
     color: #fff;
-    opacity: 0.5;
+    opacity: 1;
+    font-family: sans-serif;
     text-decoration: none;
     transition: opacity 300ms ease;
 
@@ -756,4 +757,16 @@ ul {
   }
 }
 
+.footer {
+  height: 60px;
+  background: black;
+  .top-bar ul {
+    height: 60px;
+    padding: 20px;
+  }
+  li:not(.has-form) a:not(.button) {
+    background: black;
+    padding: 0 34px;
+  }
+}
 
