@@ -260,12 +260,14 @@ table {
 }
 
 *[role="menuitem"] {
-  color: $body-font-color;
+  color: #ffffff;
   display: block;
   padding: 5pt;
+  background-color: #000000;
 
   &:hover {
-    background-color: $primary-color;
+    //background-color: $primary-color;
+    background-color: #666666;
     color: white;
   }
 }
@@ -667,6 +669,9 @@ ul {
 }
 
 .menu {
+  .container {
+    padding: 0px;
+  }
   *[role="search"] {
     input {
       background-color: $vapor;
