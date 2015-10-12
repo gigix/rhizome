@@ -27,11 +27,7 @@ var DataActions = require('actions/DataActions');
 var GeoActions = require('actions/GeoActions');
 
 var LAYOUT = {
-  'Management Dashboard': require('dashboard/ManagementDashboard.jsx'),
-  'NGA Campaign Monitoring': require('dashboard/NCODashboard.jsx'),
-  'District Dashboard': require('dashboard/District.jsx'),
-  'Source Data': require('dashboard/SourceDataDashboard.jsx'),
-  'ODK Dashboard': require('dashboard/ODKDashboard.jsx'),
+  'Management Dashboard': require('dashboard/LandingPageDashboard.jsx'),
 };
 
 var Dashboard = React.createClass({
@@ -159,7 +155,6 @@ var Dashboard = React.createClass({
   },
 
   _show: function(ctx) {
-    console.log(ctx);
     NavigationStore.getDashboard(ctx.params.dashboard).then(dashboard => {
       DashboardActions.setDashboard({
         dashboard,
@@ -210,10 +205,6 @@ var Dashboard = React.createClass({
         .value()
     );
 
-    // this.state.data is empty for custom dashboards.. tryign to fix
-    // var data_for_init = this.state.data ||
-    var data_for_init = this.state.dashboard.charts
-
     var data = dashboardInit(
       dashboardDef,
       this.state.data,
@@ -236,8 +227,7 @@ var Dashboard = React.createClass({
     };
 
     var dashboard = React.createElement(
-      _.get(LAYOUT, dashboardName, CustomDashboard),
-      dashboardProps);
+      _.get(LAYOUT, dashboardName, CustomDashboard), dashboardProps);
 
     var campaigns = _(this.state.campaigns)
       .filter(c => c.office_id === location.office_id)
