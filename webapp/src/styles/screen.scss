@@ -102,7 +102,7 @@ nav {
   a {
     color: #fff;
     opacity: 1;
-    font-family: sans-serif;
+    font-family: proxima-bold, Arial, Helvetica, sans-serif;
     text-decoration: none;
     transition: opacity 300ms ease;
 
@@ -142,7 +142,7 @@ body.admin nav .admin {
 
   a {
     opacity: 1;
-    background-color: darkred !important;
+    background-color: #c32027 !important;
   }
 }
 
@@ -754,10 +754,16 @@ ul {
     padding: 0px;
   }
 
+
   li:not(.has-form) a:not(.button) {
     background: black;
     padding: 0px;
     line-height: 99px;
+    font-family: proxima-bold, Arial, Helvetica, sans-serif;
+
+    &:hover {
+      background-color: #666666;
+    }
   }
 }
 
@@ -777,17 +783,9 @@ ul {
   }
 
   a {
-    color: #fff;
-    opacity: 1;
-    font-family: sans-serif;
-    text-decoration: none;
-    transition: opacity 300ms ease;
-
-    &:focus,
     &:hover {
       color: #666666;
       opacity: 1;
-      outline: none;
     }
   }
 }
