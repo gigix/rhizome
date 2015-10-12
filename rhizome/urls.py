@@ -78,6 +78,9 @@ urlpatterns = patterns('',
     ## DOCUMENT_REVIEW ##
     url(r'^doc_review/', TemplateView.as_view(template_name="doc_review.html"), name='doc_review'),
 
+    ## FOOTER ABOUT##
+    url(r'^about/', TemplateView.as_view(template_name="about.html"), name='about'),
+
     ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

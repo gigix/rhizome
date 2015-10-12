@@ -78,8 +78,8 @@ var Navigation = React.createClass({
     );
 
     return (
-          <nav className="top-bar" data-topbar role="navigation">
-            <section className="top-bar-section">
+          <nav className='top-bar' data-topbar role='navigation'>
+            <section className='top-bar-section'>
               <ul className='left row'>
                 <li className='home item medium-3 columns'><a href='/'>Rhizome DB</a></li>
 

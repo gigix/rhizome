@@ -9,7 +9,7 @@ var Footer = React.createClass({
               <section>
                 <ul className='right'>
                   <li>
-                    <a href="#">ABOUT</a>
+                    <a href='/about'>ABOUT</a>
                   </li>
 
                   <li>

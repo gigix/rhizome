@@ -9,6 +9,7 @@ var Navigation       = require('component/Navigation.jsx');
 var Footer = require('component/Footer.jsx');
 var AdminApp         = require('./ufadmin');
 var GroupForm = require('view/group-form/GroupForm.jsx');
+var AboutPage = require('view/About.jsx');
 
 Vue.config.debug = true;
 
@@ -78,5 +79,8 @@ module.exports = {
 	GroupForm: function(el, group_id) {
 		// React.render(React.createElement(GroupForm), el);
 		React.render(React.createElement(GroupForm, {group_id: group_id}), el);
+	},
+	AboutPage: function(el) {
+		React.render(React.createElement(AboutPage), el);
 	}
 };
