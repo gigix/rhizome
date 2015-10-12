@@ -760,6 +760,9 @@ ul {
 .footer {
   height: 60px;
   background: black;
+  .top-bar {
+    height: 60px;
+  }
   .top-bar ul {
     height: 60px;
     padding: 20px;
@@ -767,6 +770,21 @@ ul {
   li:not(.has-form) a:not(.button) {
     background: black;
     padding: 0 34px;
+  }
+
+  a {
+    color: #fff;
+    opacity: 1;
+    font-family: sans-serif;
+    text-decoration: none;
+    transition: opacity 300ms ease;
+
+    &:focus,
+    &:hover {
+      color: #666666;
+      opacity: 1;
+      outline: none;
+    }
   }
 }
 

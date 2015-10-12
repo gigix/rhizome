@@ -6,10 +6,10 @@ var Footer = React.createClass({
     return(
         <div className='footer'>
           <nav className='top-bar' data-topbar role='navigation'>
-              <section className='footer'>
+              <section>
                 <ul className='right'>
                   <li>
-                    <a href="#">ABOUR</a>
+                    <a href="#">ABOUT</a>
                   </li>
 
                   <li>
