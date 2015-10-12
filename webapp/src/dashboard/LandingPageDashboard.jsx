@@ -97,7 +97,8 @@ var ManagementDashboard = React.createClass({
     var performance = (
         <div>
             <section className='medium-2 columns'>
-              <h4>Missed Children</h4>
+              <h5>{location}</h5>
+              <h6>Missed Children</h6>
                   <Chart type='ChoroplethMap'
                     data={missedChildrenMap}
                     loading={loading}
@@ -111,7 +112,8 @@ var ManagementDashboard = React.createClass({
 
             <div className='medium-2 columns'>
                 <section>
-                    <h4>Missed Children</h4>
+                    <h5>{location}</h5>
+                    <h6>Missed Children</h6>
                     <Chart type='ColumnChart' data={missed}
                       loading={loading}
                       options={{
