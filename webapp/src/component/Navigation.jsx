@@ -57,7 +57,7 @@ var Navigation = React.createClass({
 
     var myToolkit = (
         <li className='medium-4 columns'>
-          <NavMenu text={'MYTOOLKIT'}>
+          <NavMenu text={'MYTOOLKIT'} icon={'fa-plus'}>
             {logoutLink}
           </NavMenu>
         </li>

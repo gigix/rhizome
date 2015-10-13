@@ -15,25 +15,27 @@
 </head>
 
 <body class="{% block section %}{% endblock %}">
-<header class="no-print">
+<div data-role="page">
+<div data-role="header" class="no-print">
     <nav id="main-nav"></nav>
-</header>
+</div>
 
-<div id="main" role="main">
+<div id="main" role="main" class="ui-content">
     {% block nav %}{% endblock %}
     {% block content %}{% endblock %}
 
     <div id="tooltip" v-component="vue-tooltip"></div>
 </div>
 
-<footer>
+<div data-role="footer">
     <nav id="main-footer"></nav>
-</footer>
+</div>
 
 <script src="{% static 'js/vendor.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
 
 {% block scripts %}{% endblock %}
 
+</div>
 </body>
 </html>
