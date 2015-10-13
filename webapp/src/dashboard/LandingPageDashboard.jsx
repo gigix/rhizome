@@ -89,7 +89,7 @@ var ManagementDashboard = React.createClass({
     var pct = d3.format('%');
 
     var impact = (
-        <div className='medium-2 columns'>
+        <div className='chart-landing medium-2 columns'>
             <h5>{location}</h5>
             <PolioCasesYTD data={data.impact.polioCasesYtd} campaign={this.props.campaign} loading={loading} />
         </div>
@@ -97,7 +97,7 @@ var ManagementDashboard = React.createClass({
 
     var performance = (
         <div>
-            <section className='medium-2 columns'>
+            <section className='chart-landing medium-2 columns'>
               <h5>{location}</h5>
               <h4>Missed Children</h4>
                   <Chart type='ChoroplethMap'
@@ -111,7 +111,7 @@ var ManagementDashboard = React.createClass({
                     }} />
             </section>
 
-            <div className='medium-2 columns'>
+            <div className='chart-landing medium-2 columns'>
                 <section>
                     <h5>{location}</h5>
                     <h4>Missed Children</h4>
