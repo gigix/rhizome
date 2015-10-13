@@ -107,7 +107,6 @@ module.exports = React.createClass({
           ref="menu">
 
           <div className="background">
-            <div className="arrow"></div>
             {search}
             <ul ref="itemlist" style={itemlistStyle}>
               {this.props.children}
